@@ -1,0 +1,927 @@
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<style>
+.columns{
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  width:inherit;
+}
+
+.mini-columns{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+}
+
+.mini-columns-prices{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  
+  padding-bottom:0.3em;
+  padding-top:0.3em;  
+}
+
+.mini-columns-items{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  width:100%;
+}
+
+.items-containers{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  width:100%;
+}
+
+.mini-cols-prices{
+  border-bottom: 2px solid gainsboro;
+}
+
+.mini-cols-items{
+  width:50%;
+}
+
+.price-right{
+  width:45%;
+  text-align:right;
+}
+
+.header{
+  text-align:center;
+}
+
+
+.cols-prices{
+  position: -webkit-sticky;
+  position: sticky;
+  width: 30%;
+  top: 0;
+  background-color:rgba(240,240,240,1);
+}
+
+.cols-items{
+  
+}
+
+.items-mini-cols{
+  width:50%;
+  border: 2px solid gainsboro;
+  text-align:center;
+  padding-bottom:0.75em;
+  height:300px;
+}
+
+.quantity-div{
+  width:60%;
+  background-color:gainsboro;
+  margin: 0 auto;
+  padding:5px;
+  border-radius:5px;
+  padding-bottom:0.75em
+}
+
+.incr-decr-container{
+  width:95%;
+  margin: 0 auto;
+  display:flex;
+  align-items:flex-start;
+}
+
+.decrement{
+  width:100%;
+  background-color:DodgerBlue;
+  color:white;
+  font-size: 1.37em;
+  text-align:center;
+  border-radius: 5px 0px 0px 5px;
+  vertical-align:middle;
+  height:43px;
+}
+
+.increment{
+  width:100%;
+  background-color:DodgerBlue;
+  color:white;
+  font-size: 1.37em;
+  text-align:center;
+  border-radius: 0px 5px 5px 0px;
+  vertical-align:middle;
+  height:43px;
+}
+.quantity{
+  width:100%;
+  height:31px;
+  text-align:center;
+  
+}
+
+.increment:hover{
+  background-color:green
+}
+
+.decrement:hover{
+  background-color:green
+}
+
+img {
+	height: 70px;
+}
+
+#payment-sidebar{
+	position:fixed;
+	left:0px;
+	top: 0px;
+	z-index: 1;
+	width:0;
+	background-color:rgb(67,70,75);
+	height:100%;
+	transition:0.5s;
+}
+
+.sidebar-buttons{
+	font-size: 1.3em;
+	text-align:center;
+	border-radius: 3px;
+	vertical-align:middle;
+	height:35px;
+	width:85%;
+	padding-top:6px;
+	display:none;
+}
+
+.sidebar-buttons:hover{
+	opacity:0.8;
+	cursor:pointer;
+}
+
+#total-items-span{
+	color:white;
+	text-align:center;
+	border-radius:100%;
+	background-color:red;
+	padding:4px 6px;
+}
+
+#checkout-cart-items:hover{
+	background-color:rgba(210,210,210,0.8) !important;
+	cursor:pointer;
+}
+
+#add-to-cart-items:hover{
+	opacity:0.6;
+	cursor:pointer;
+}
+
+#clear-cart-items:hover{
+	background-color:rgba(210,210,210,0.8) !important;
+}
+
+#sidebar-close:hover{
+	background-color:rgba(210,210,210,0.8) !important;
+}
+
+th, td, tr {
+	border: 2px solid white;
+  
+}
+
+table{
+	border-collapse: collapse;
+}
+
+td{
+    padding:2px
+}
+
+</style>
+
+<input type="hidden" class="hidden_quantities" id="cart_clear_hidden" value=1 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_1" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_2" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_3" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_4" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_5" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_6" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_7" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_8" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_9" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_10" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_11" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_12" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_13" value=0 />
+<input type="hidden" class="hidden_quantities" id="current_cart_quantity_14" value=0 />
+
+
+
+<div id="payment-sidebar">
+	<div style="display:flex; justify-content:flex-end; padding-top:0.15em; padding-right:0.1em">
+		<div style="display:none; width:11%; height: 20px; text-align:center; padding-top: 2px; border-radius: 2px; box-shadow: 0px 2px; background-color:rgba(200,200,200,1)" id="sidebar-close">
+			&times;
+		</div>
+	</div>
+	<div id="cart-table" style="display:none; text-align:center; max-height:450px; overflow-y:auto; padding-left:1em; padding-top:0.75em;">
+		<span id="no-quantity-span" style="color:white; display:none">No items currently in cart</span>
+		<table id="quantity_table" style="width:90%; display:none">
+				<thead>
+					<tr>
+						<th style="width:10%; text-align:center; background-color:darkblue; color:white;">Qty</th>
+						<th style="width:60%; text-align:center; background-color:darkblue; color:white;">Item Name</th>
+						<th style="width:15%; text-align:center; background-color:darkblue; color:white;">Item Price</th>
+						<th style="width:15%; text-align:center; background-color:darkblue; color:white;">Subtotal</th>
+					</tr>
+				</thead>
+				<tbody id="table_body">
+				</tbody>
+		</table>
+	</div>
+	<div style="display:flex; padding-top:1em;">
+		<div style="width:8%"></div>
+		<div style="width:40%; text-align:right">
+			<div class="sidebar-buttons" id="cancel-cart-sidebar" style="background-color:rgba(200,200,200,1)" >Cancel</div>
+		</div>
+		<div style="width:4%"></div>
+		<div style="width:40%">
+			<div class="sidebar-buttons" id="checkout-cart-sidebar" style="background-color:DodgerBlue; color:white;">Checkout</div>
+		</div>
+		<div style="width:8%"></div>
+	</div>
+</div>
+
+
+<div class="container" style="width:97%; max-width:1300px; min-width:950px; padding-bottom:1em; margin:0 auto;">
+	<div class="cart-button-wrapper" style="display:flex; justify-content:flex-end;">
+		<div id="clear-cart-items" style="display:none; cursor:pointer; text-align:center; width: 12%; height: 40px; padding-top: 7px; border-radius: 5px; box-shadow: 2px 2px; background-color:rgba(200,200,200,1)">Clear Cart</div>
+		<div style="width:4%"></div>
+		<div id="checkout-cart-items" style="text-align:center; width: 18%; height: 40px; padding-top: 7px; border-radius: 5px; box-shadow: 2px 2px; background-color:rgba(200,200,200,1)">Inspect Cart&emsp;<span id="total-items-span">0</span></div>
+	</div>
+   <div class="header" style="border-bottom:4px solid gainsboro">
+        <h1 style="text-align:center">
+          <b>ESSENTIALS Kindergarten Box</b>
+        </h1>
+	</div>
+	<div class="columns">
+     <!--Pricing left side Div-->
+		<div class="cols-prices">
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%; border-bottom:0">
+					<h4><strong>PRICING*</strong></h4>
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%">
+					Box Price:
+				</div>
+				<div id="box-price" class="mini-cols-prices price-right">
+					$34.99
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%">
+					Adjustments:
+				</div>
+				<div id="adjustment-price" class="mini-cols-prices price-right">
+					<span id="adjustment-price-span">$0.00</span>
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%">
+					New Price:
+				</div>
+				<div id="new-price" class="mini-cols-prices price-right">
+					<span id="new-price-span">$34.99</span>
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%">
+					Add-on Items:
+				</div>
+				<div id="add-on-price" class="mini-cols-prices price-right">
+					$0.00
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:50%; border-bottom:0">
+					<strong>Total Adding To Cart:</strong>
+				</div>
+				<div id="total-cart-price" class="mini-cols-prices price-right" style="border-bottom:0">
+					<span id="total-cart-price-span">$34.99</span>
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:90%; margin-top:0.25em; padding-bottom:0.5em">
+					* prices automatically adjust as you change quantities or add optional items.
+				</div>
+			</div>
+			<div class="mini-columns-prices" style="padding-top:0; padding-bottom:0">
+				<div class="mini-cols-prices" style="width:90%; border-bottom:0">
+					<h4><strong>BOX IS FOR:</strong></h4>
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:90%; border-bottom:0">
+					First Name
+				</div>
+			</div>
+			<div class="mini-columns-prices" style="padding-top:0">
+				<div class="mini-cols-prices" style="width:95%; border-bottom:0">
+					<input type="text" form="item-form" id="first-name" name="first-name" style="width:100%; height:35px; border-radius:7px; border:3px solid rgba(200,200,200,1)" />
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:90%; border-bottom:0">
+					Last Name
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:95%; border-bottom:0">
+					<input type="text" form="item-form" id="last-name" name="last-name" style="width:100%; height:35px; border-radius:7px; border:3px solid rgba(200,200,200,1)" />
+				</div>
+			</div>
+			<div class="mini-columns-prices">
+				<div class="mini-cols-prices" style="width:95%; border-bottom:0; text-align:center">
+					<button type="submit" id="add-to-cart-items" style="width:60%; height:40px; border-radius:5px; background-color:#0274be; color:white; box-shadow:0px 2px DodgerBlue">ADD TO CART</button>
+				</div>
+			</div>
+		</div>
+    <!--Quantities right side Div-->
+	<form id="item-form">
+		<div class="cols-items">
+			<div class="header">
+				<h1>
+					<b>INCLUDED ITEMS</b>
+				</h1>
+				<h3>Change quantities to customize</h3>
+			</div>
+			<div class="mini-columns-items">
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="pencil pic" />
+							<p id="quantity_1_p" style="height:80px">Pencil #2 Yellow Woodcase Sharpened<br>12ct</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_1">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+									<input type="text" data-price=2.00 data-initial_value=1 class="quantity" id="quantity_1" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+									<div class="increment" id="increment_1">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="eraser pic" />
+							<p id="quantity_2_p" style="height:80px">PaperMate Pink Pearl Latex-Free Eraser (EACH)</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_2">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=1.00 data-initial_value=1 class="quantity" id="quantity_2" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_2" >+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="pencil box pic" />
+							<p id="quantity_3_p" style="height:80px">Pencil Box <br> 8.25LX5.25WX2.25H -<br>Assorted Colors</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_3" >-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=3.00 data-initial_value=1 class="quantity" id="quantity_3" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_3" >+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="markers pic" />
+							<p id="quantity_4_p" style="height:80px">Crayola Washable<br>Markers Conical/Broad<br>Tip Classic Colors 8ct</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_4">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=5.00 data-initial_value=1 class="quantity" id="quantity_4" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_4">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mini-columns-items">
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="Scissors pic" />
+							<p id="quantity_5_p" style="height:80px">Scissors Stainless Steel Blunt 5*</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_5">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=3.00 data-initial_value=1 class="quantity" id="quantity_5" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_5">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="crayons pic" />
+							<p id="quantity_6_p" style="height:80px">Crayola Crayons 24ct</p>
+								<div class="quantity-div">
+									<p>QUANTITY</p>
+									<div class="incr-decr-container">
+										<div class="decrement-div" style="width:35%">
+											<div class="decrement" id="decrement_6">-</div>
+										</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=6.00 data-initial_value=1 class="quantity" id="quantity_6" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_6">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="glue pic" />
+							<p id="quantity_7_p" style="height:80px">Elmer's Washable School Glue<br>White 4oz</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_7">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=2.00 data-initial_value=1 class="quantity" id="quantity_7" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_7">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="Glue stick pic" />
+							<p id="quantity_8_p" style="height:80px">Elmer's Small Glue Stick<br>Washable Purple - Dries Clear<br>.21oz (EACH)</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_8">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=0.70 data-initial_value=2 class="quantity" id="quantity_8" value=2 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_8">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mini-columns-items">
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="Dry Erase pic" />
+							<p id="quantity_9_p" style="height:80px">Expo Low Odor Dry Erase<br>Marker Chisel Tip Black (EACH)</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_9">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=1.80 data-initial_value=2 class="quantity" id="quantity_9" value=2 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_9">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="Folder pic" />
+							<p id="quantity_10_p" style="height:80px">2-Pocket Folder Paper w/out<br>Clasp Assorted</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_10">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=0.71 data-initial_value=1 class="quantity" id="quantity_10" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_10">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mini-cols-items">
+					<div class="items-containers">
+						<div class="items-mini-cols">
+							<img src="" alt="spiral notebook pic" />
+							<p id="quantity_11_p" style="height:80px">Spiral Notebook 1 Sub Wide <br>Rule Assorted 70ct</p>
+								<div class="quantity-div">
+								<p>QUANTITY</p>
+									<div class="incr-decr-container">
+										<div class="decrement-div" style="width:35%">
+											<div class="decrement" id="decrement_11">-</div>
+										</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=1.39 data-initial_value=2 class="quantity" id="quantity_11" value=2 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_11">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="items-mini-cols">
+							<img src="" alt="construction paper pic" />
+							<p id="quantity_12_p" style="height:80px">Construction Paper Assorted<br>50ct 9x12</p>
+							<div class="quantity-div">
+								<p>QUANTITY</p>
+								<div class="incr-decr-container">
+									<div class="decrement-div" style="width:35%">
+										<div class="decrement" id="decrement_12">-</div>
+									</div>
+									<div class="input-quantity-div" style="width:30%">
+										<input type="text" data-price=1.95 data-initial_value=1 class="quantity" id="quantity_12" value=1 />
+									</div>
+									<div class="increment-div" style="width:35%">
+										<div class="increment" id="increment_12">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mini-columns-items">
+				<div class="items-mini-cols">
+					<img src="" alt="Watercolor pic" />
+					<p id="quantity_13_p" style="height:80px">Crayola Washable Watercolor<br>Paints w/Brush 8ct</p>
+					<div class="quantity-div" style="width:30%">
+						<p>QUANTITY</p>
+						<div class="incr-decr-container">
+							<div class="decrement-div" style="width:35%">
+								<div class="decrement" id="decrement_13">-</div>
+							</div>
+							<div class="input-quantity-div" style="width:30%">
+								<input type="text" data-price=3.12 data-initial_value=1 class="quantity" id="quantity_13" value=1 />
+							</div>
+							<div class="increment-div" style="width:35%">
+								<div class="increment" id="increment_13">+</div>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="items-mini-cols">
+					<img src="" alt="Kleenex pic" />
+					<p id="quantity_14_p" style="height:80px">Kleenex Facial Tissue Medium<br>Box</p>
+					<div class="quantity-div" style="width:30%">
+						<p>QUANTITY</p>
+						<div class="incr-decr-container">
+							<div class="decrement-div" style="width:35%">
+								<div class="decrement" id="decrement_14">-</div>
+							</div>
+							<div class="input-quantity-div" style="width:30%">
+								<input type="text" data-price=2.43 data-initial_value=1 class="quantity" id="quantity_14" value=1 />
+							</div>
+							<div class="increment-div" style="width:35%">
+								<div class="increment" id="increment_14">+</div>
+							</div>
+						</div>
+					</div>
+                </div> 
+			</div>
+		</div>
+    </form>
+    <!--End of Quantities Div-->
+    </div>
+</div>
+
+<script>
+  
+  $('.quantity').on('blur', function(){
+    var target_id=$(this).attr('id');
+    var current_value=$(this).val();
+    var isValid=Number.isInteger(parseFloat(current_value));
+    if (!isValid){
+      alert('Must submit a 0 or a valid positive number');
+      $(this).val($(this).attr('data-initial_value'));
+      var total_to_add=Adjustments(0, target_id);
+      var adjustment_price_string="";
+    var total_price_string="";
+    if (parseFloat(total_to_add)<0){
+      adjustment_price_string+='-$'+parseFloat(-1*total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    else{
+      adjustment_price_string+='$'+parseFloat(total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    $('#adjustment-price-span').html(adjustment_price_string);
+    $('#new-price-span').html(total_price_string);
+    $('#total-cart-price-span').html(total_price_string);
+    var OrigBack=$('#adjustment-price').css('background-color');
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', 'yellow');
+    setTimeout(function(){
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', OrigBack); 
+    }, 700);
+      return;
+    }
+    else if (current_value<0){
+      alert('Cannot input negative values');
+      var value=0;
+      $(this).val(0);
+    }
+    else{var value=current_value;}
+    var value_diff= value - $(this).attr('data-initial_value');
+    var price_diff=value_diff*$(this).attr('data-price');
+    var total_to_add=Adjustments(price_diff, target_id);
+    var adjustment_price_string="";
+    var total_price_string="";
+    if (parseFloat(total_to_add)<0){
+      adjustment_price_string+='-$'+parseFloat(-1*total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    else{
+      adjustment_price_string+='$'+parseFloat(total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    $('#adjustment-price-span').html(adjustment_price_string);
+    $('#new-price-span').html(total_price_string);
+    $('#total-cart-price-span').html(total_price_string);
+    var OrigBack=$('#adjustment-price').css('background-color');
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', 'yellow');
+    setTimeout(function(){
+     $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', OrigBack); 
+    }, 700);
+    
+    
+  })
+  
+  
+  $('.decrement').on('click', function(){
+	event.preventDefault();
+    var target_input=$(this).parent().parent().find('.quantity');
+    var target_id=target_input.attr('id');
+    var current_value=target_input.val();
+    if (current_value<=0){
+      var value=0;
+    }
+    else{var value=current_value-1;}
+    target_input.val(value);
+    var value_diff= value - target_input.attr('data-initial_value');
+    var price_diff=value_diff*target_input.attr('data-price');
+    var total_to_add=Adjustments(price_diff, target_id);
+    var adjustment_price_string="";
+    var total_price_string="";
+    if (parseFloat(total_to_add)<0){
+      adjustment_price_string+='-$'+parseFloat(-1*total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    else{
+      adjustment_price_string+='$'+parseFloat(total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    $('#adjustment-price-span').html(adjustment_price_string);
+    $('#new-price-span').html(total_price_string);
+    $('#total-cart-price-span').html(total_price_string);
+    var OrigBack=$('#adjustment-price').css('background-color');
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', 'yellow');
+    setTimeout(function(){
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', OrigBack); 
+    }, 700);
+  })
+  
+  $('.increment').on('click', function(){
+	event.preventDefault();
+    var target_input=$(this).parent().parent().find('.quantity');
+    var target_id=target_input.attr('id');
+    var current_value=target_input.val();
+    if (current_value<0){
+      var value=0;
+    }
+    else{var value=parseFloat(current_value)+1;}
+    target_input.val(value);
+    var value_diff= value - target_input.attr('data-initial_value');
+    var price_diff=value_diff*target_input.attr('data-price');
+    var total_to_add=Adjustments(price_diff, target_id);
+    var adjustment_price_string="";
+    var total_price_string="";
+    if (parseFloat(total_to_add)<0){
+      adjustment_price_string+='-$'+parseFloat(-1*total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    else{
+      adjustment_price_string+='$'+parseFloat(total_to_add).toFixed(2);
+      var adjust_total_number=34.99+parseFloat(total_to_add);
+      total_price_string+="$"+parseFloat(adjust_total_number).toFixed(2);
+    }
+    $('#adjustment-price-span').html(adjustment_price_string);
+    $('#new-price-span').html(total_price_string);
+    $('#total-cart-price-span').html(total_price_string);
+    var OrigBack=$('#adjustment-price').css('background-color');
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', 'yellow');
+    setTimeout(function(){
+    $('#adjustment-price-span, #new-price-span, #total-cart-price-span').css('background-color', OrigBack); 
+    }, 700);
+  })
+  
+  function Adjustments(initial_diff, target_id){
+    var all_quantities=$('.quantity');
+    var total_to_add = initial_diff;
+    $.each(all_quantities, function(index, value){
+      if (value.id !== target_id){
+        total_to_add+= (value.value-value.dataset.initial_value)*value.dataset.price;
+      }
+    });
+    return total_to_add;
+  }
+  
+  function Total_Cart_Items(current_total){
+	var total=parseFloat(current_total);
+	var all_quantities=$('.quantity');
+	$.each(all_quantities, function(index, value){
+        total+= parseFloat(value.value);
+    });
+	return total;
+  }
+  
+  function Update_Hidden_Values(){
+	var all_quantities=$('.quantity');
+	window.localStorage.setItem('clear_cart', 'N');
+	$.each(all_quantities, function(index, value){
+		var current_id=value.id;
+		var current_quantity=parseFloat(value.value);
+		$('#current_cart_'+current_id).val(current_quantity);
+		window.localStorage.setItem(current_id, current_quantity);
+	});
+  }
+  
+$('#add-to-cart-items').on('click', function(){
+	event.preventDefault();
+	if ($('#cart_clear_hidden').val()==0){
+		var replace_cart=confirm('Your current selection will replace what is currently in cart. Are you sure you want to proceed?');
+		if(!replace_cart){
+			return;	
+		}
+	}
+	var initial_total=parseFloat($('#total-items-span').text());
+	var new_total=Total_Cart_Items(0);
+	Update_Hidden_Values();
+	$('#cart_clear_hidden').val(0);
+	$('#total-items-span').text(new_total);
+	var data={product_id:354,
+			quantity:1
+			}
+	alert(wc_add_to_cart_params.wc_ajax_url.toString(' %%endpoint%% ', 'add_to_cart'));
+	$.post(wc_add_to_cart_params.wc_ajax_url.toString(' %%endpoint%% ', 'add_to_cart'), data, function(response){
+		if(response.error){alert(response.error!);}
+	});
+	alert('Items were successfully added to cart');
+	$('#clear-cart-items').css('display', 'block');
+	
+})
+
+$('#sidebar-close, #cancel-cart-sidebar').on('click', function(){
+	event.preventDefault();
+	$('.container').css({'opacity' : 1, 'pointer-events' : 'auto'});
+	document.getElementById('payment-sidebar').style.width = "0px";
+	$('.sidebar-buttons').toggle();
+	$('#sidebar-close').toggle();
+	$('#cart-table').toggle();
+	if(!window.localStorage.getItem('clear_cart') || window.localStorage.getItem('clear_cart')=='Y'){
+		$('#no-quantity-span').css('display', 'none')	
+	}
+	else{
+		$('#quantity_table').css('display', 'none');
+	}	
+})
+
+$('#checkout-cart-items').on('click', function(){
+	event.preventDefault();
+	alert(window.localStorage.getItem('clear_cart'))
+	$('.container').css({'opacity' : 0.5, 'pointer-events' : 'none'});
+	document.getElementById('payment-sidebar').style.width = "600px";
+	$('.sidebar-buttons').toggle();
+	$('#sidebar-close').toggle();
+	$('#cart-table').toggle();
+	if(!window.localStorage.getItem('clear_cart') || window.localStorage.getItem('clear_cart')=='Y'){
+		$('#no-quantity-span').css('display', 'inline');
+	}
+	else{
+		
+		var table_string="";
+		var all_quantities=$('.quantity');
+		$.each(all_quantities, function(index, value){
+		var current_id=value.id;
+		var current_value=window.localStorage.getItem(current_id);
+		var item_price=value.dataset.price;
+		var subtotal=parseFloat(current_value*item_price).toFixed(2);
+		var item_name=$('#'+current_id+'_p').html();
+		table_string+="<tr><td  style='font-size:85%; color:white; text-align:center'>"+current_value+"</td>";
+		table_string+="<td style='font-size:85%; color:white; text-align:center'>"+item_name+"</td>";
+		table_string+="<td style='font-size:85%; color:white; text-align:center'>$"+item_price+"</td>";
+		table_string+="<td style='font-size:85%; color:white; text-align:center'>$"+subtotal+"</td></tr>";
+		});
+		$('#table_body').html(table_string);
+		$('#quantity_table').css('display', 'block');
+	}
+})
+
+$('#clear-cart-items').on('click', function(){
+	var clear_cart= confirm('You sure you want to clear your cart?');
+	if (!clear_cart){
+		return;
+	}
+	else{
+		var all_quantities=$('.quantity');
+		window.localStorage.setItem('clear_cart', 'Y');
+		$('#cart_clear_hidden').val(1);
+		$.each(all_quantities, function(index, value){
+		var current_id=value.id;
+		$('#current_cart_'+current_id).val(0);
+		window.localStorage.setItem(current_id, 0);
+		});
+		$('#clear-cart-items').css('display', 'none');
+		$('#total-items-span').text('0');
+	}
+})
+
+$(function(){
+	if(!window.localStorage.getItem('clear_cart') || window.localStorage.getItem('clear_cart')=='Y'){
+		$('#clear-cart-items').css('display', 'none');
+	}
+	else{
+		$('#clear-cart-items').css('display', 'block');
+		$('#cart_clear_hidden').val(0);
+		var new_total=0;
+		var all_quantities=$('.quantity');
+		$.each(all_quantities, function(index, value){
+			var current_id=value.id;
+			if(window.localStorage.getItem(current_id)){
+				var current_quantity=parseFloat(window.localStorage.getItem(current_id));
+				$('#current_cart_'+current_id).val(current_quantity);
+				new_total+=current_quantity;
+			}
+		});
+		$('#total-items-span').text(new_total);
+	}
+})
+
+</script>
